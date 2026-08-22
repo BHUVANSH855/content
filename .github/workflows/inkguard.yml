@@ -1,4 +1,4 @@
-name: InkGuard â€” Documentation Review
+name: InkGuard — Documentation Review
 
 on:
   pull_request:
@@ -8,7 +8,6 @@ on:
       - "**.mdx"
       - "**.txt"
       - "**.rst"
-      - "**.adoc"
 
 permissions:
   pull-requests: write
@@ -26,16 +25,19 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
       - name: Install dependencies
         run: pip install flask
 
+      - name: Clone InkGuard bot
+        run: |
+          git clone --depth 1 https://github.com/BHUVANSH855/InkGuard.git /tmp/inkguard
+
       - name: Run InkGuard Bot
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          IG_SCORE_THRESHOLD: "80" # minimum passing score
-          IG_FAIL_ON_ERROR: "false" # set "true" to block merges
-          IG_REQUIRE_LABEL: "true" # only run when PR has a trigger label
+          IG_SCORE_THRESHOLD: "80"
+          IG_FAIL_ON_ERROR: "false"
+          IG_REQUIRE_LABEL: "true"
           IG_LABELS: "docs,documentation,content,inkguard,doc-review"
-        run: python bot/inkguard_bot.py
+        run: python /tmp/inkguard/bot/inkguard_bot.py
