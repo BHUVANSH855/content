@@ -9,3 +9,7 @@ The bot should catch these errors and request changes on this pull request.
 
 In order to test the bot, we need a document with errors.
 Prior to running the bot, we must label the PR with docs label.
+
+I want to feet like i am done nothing. I will do the most correct thing in the worlds",
+
+I am used the msot tecnical thigns. 
