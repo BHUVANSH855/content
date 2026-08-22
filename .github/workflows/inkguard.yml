@@ -1,0 +1,51 @@
+name: InkGuard - Documentation Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+    paths:
+      - "**.md"
+      - "**.mdx"
+      - "**.txt"
+      - "**.rst"
+
+permissions:
+  pull-requests: write
+  contents: read
+  issues: write
+
+jobs:
+  inkguard:
+    name: InkGuard Review
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate InkGuardBot token
+        id: bot_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install flask
+
+      - name: Clone InkGuard bot
+        run: git clone --depth 1 https://github.com/BHUVANSH855/InkGuard.git /tmp/inkguard
+
+      - name: Run InkGuard Bot
+        env:
+          GITHUB_TOKEN: ${{ steps.bot_token.outputs.token }}
+          GITHUB_REPOSITORY: BHUVANSH855/content
+          IG_SCORE_THRESHOLD: "80"
+          IG_FAIL_ON_ERROR: "false"
+          IG_REQUIRE_LABEL: "true"
+          IG_LABELS: "docs,documentation,content,inkguard,doc-review"
+        run: python /tmp/inkguard/bot/inkguard_bot.py
