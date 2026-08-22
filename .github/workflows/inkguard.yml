@@ -12,6 +12,7 @@ on:
 permissions:
   pull-requests: write
   contents: read
+  issues: write
 
 jobs:
   inkguard:
@@ -42,6 +43,7 @@ jobs:
       - name: Run InkGuard Bot
         env:
           GITHUB_TOKEN: ${{ steps.bot_token.outputs.token }}
+          GITHUB_REPOSITORY: BHUVANSH855/content
           IG_SCORE_THRESHOLD: "80"
           IG_FAIL_ON_ERROR: "false"
           IG_REQUIRE_LABEL: "true"
