@@ -23,6 +23,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate InkGuardBot token
+        id: bot_token
+        uses: tibdex/github-app-token@v2
+        with:
+          app_id: ${{ secrets.APP_ID }}
+          private_key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -35,7 +42,7 @@ jobs:
 
       - name: Run InkGuard Bot
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.bot_token.outputs.token }}
           GITHUB_REPOSITORY: BHUVANSH855/content
           IG_SCORE_THRESHOLD: "80"
           IG_FAIL_ON_ERROR: "false"
